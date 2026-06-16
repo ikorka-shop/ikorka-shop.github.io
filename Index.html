@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IkorkaShop — Ікра та риба з доставкою по Україні</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0a;
+  --bg2: #111111;
+  --bg3: #1a1a1a;
+  --border: #222222;
+  --gold: #c9a84c;
+  --gold-light: #f0c96a;
+  --gold-dim: rgba(201,168,76,0.15);
+  --text: #f0ece4;
+  --text-dim: #888880;
+  --text-muted: #555550;
+  --red: #e05252;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--gold); letter-spacing: 0.05em; }
+.nav-cta { background: var(--gold); color: #000; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; }
+
+/* HERO */
+.hero {
+  padding: 60px 20px 50px;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%);
+  border-bottom: 1px solid var(--border);
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 7vw, 58px);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.hero h1 span { color: var(--gold); }
+.hero-sub { color: var(--text-dim); font-size: 16px; max-width: 480px; margin: 0 auto 32px; }
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-gold { background: var(--gold); color: #000; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; display: inline-block; }
+.btn-outline { border: 1px solid var(--border); color: var(--text); padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 15px; display: inline-block; }
+
+/* PROMO */
+.promo-bar {
+  background: linear-gradient(135deg, #1a1200, #0a0a0a);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  padding: 14px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--gold-light);
+}
+.promo-bar code {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin: 0 6px;
+}
+
+/* SECTION */
+.section { padding: 50px 20px; max-width: 700px; margin: 0 auto; }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.section-sub { color: var(--text-dim); font-size: 14px; margin-bottom: 28px; }
+
+/* TABS */
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
+
+/* PRICE TABLE */
+.price-table { display: none; }
+.price-table.active { display: block; }
+.price-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  gap: 12px;
+}
+.price-item.premium { background: #141008; border-color: rgba(201,168,76,0.2); }
+.price-name { font-weight: 500; font-size: 15px; }
+.price-name small { display: block; color: var(--text-muted); font-size: 12px; font-weight: 400; margin-top: 2px; }
+.price-right { text-align: right; flex-shrink: 0; }
+.price-old { color: var(--text-muted); font-size: 12px; text-decoration: line-through; }
+.price-new { color: var(--gold); font-weight: 700; font-size: 17px; }
+.price-disc { color: #6fcf7a; font-size: 12px; }
+.premium-badge { font-size: 10px; background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 2px 8px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.note-box {
+  background: #111a0a;
+  border: 1px solid rgba(111,207,122,0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #6fcf7a;
+  margin-top: 16px;
+}
+.warn-box {
+  background: #1a1000;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--gold);
+  margin-top: 16px;
+}
+
+/* SETS */
+.set-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.set-title { color: var(--gold); font-weight: 700; font-size: 16px; margin-bottom: 14px; }
+.set-items { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.set-row { display: flex; justify-content: space-between; font-size: 14px; }
+.set-row span:last-child { color: var(--gold); font-weight: 600; }
+.set-gift { color: #6fcf7a; font-size: 13px; }
+.set-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+.set-extra { font-size: 13px; color: var(--text-dim); }
+.free-delivery { display: inline-block; background: rgba(111,207,122,0.1); border: 1px solid rgba(111,207,122,0.2); color: #6fcf7a; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; margin-left: 8px; }
+
+/* CREAM CHEESE */
+.cream-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.cream-info .cream-name { font-weight: 600; font-size: 15px; }
+.cream-info .cream-desc { color: var(--text-dim); font-size: 13px; margin-top: 4px; line-height: 1.5; }
+.cream-info .cream-weight { color: var(--text-muted); font-size: 12px; margin-top: 6px; }
+.cream-price { text-align: right; flex-shrink: 0; }
+.cream-price .price-new { color: var(--gold); font-weight: 700; font-size: 18px; }
+.cream-price .price-disc { color: #6fcf7a; font-size: 12px; }
+.new-badge { display: inline-block; background: #e05252; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; letter-spacing: 0.05em; }
+
+/* FISH */
+.fish-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 10px;
+}
+.fish-name { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+.fish-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-dim); margin-bottom: 4px; }
+.fish-row span:last-child { color: var(--gold); font-weight: 600; }
+
+/* CONTACT */
+.contact-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  margin: 0 20px 50px;
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contact-section h2 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 8px; }
+.contact-section p { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
+.managers { display: flex; flex-direction: column; gap: 12px; }
+.manager-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-decoration: none;
+}
+.manager-info { text-align: left; }
+.manager-name { font-weight: 600; font-size: 15px; color: var(--text); }
+.manager-role { font-size: 13px; color: var(--text-dim); }
+.manager-btn { background: var(--gold); color: #000; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 13px; white-space: nowrap; }
+.manager-btn.viber { background: #7360f2; color: #fff; }
+
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 13px;
+}
+hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">IkorkaShop</div>
+  <a href="#contact" class="nav-cta">Замовити</a>
+</nav>
+
+<div class="promo-bar">
+  🎁 Знижка <strong>-5%</strong> на перше замовлення — промокод <code>IKORKA5</code> при оформленні
+</div>
+
+<div class="hero">
+  <div class="hero-badge">🐟 Ікра та риба з доставкою по Україні</div>
+  <h1>Справжня ікра<br><span>з доставкою додому</span></h1>
+  <p class="hero-sub">Понад 10 видів ікри у склі та пластику, слабосолена риба та крем-сир Philadelphia. Безкоштовна доставка в наборах.</p>
+  <div class="hero-actions">
+    <a href="#catalog" class="btn-gold">Переглянути каталог</a>
+    <a href="#contact" class="btn-outline">Написати менеджеру</a>
+  </div>
+</div>
+
+<!-- КАТАЛОГ -->
+<div class="section" id="catalog">
+  <div class="section-title">🫙 Ікра</div>
+  <div class="section-sub">Скляні банки великі (500г) та пластик (500г) — оберіть формат</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('sklo')">Скло 500г</div>
+    <div class="tab" onclick="switchTab('plastyk')">Пластик 500г</div>
+    <div class="tab" onclick="switchTab('mali')">Малі банки</div>
+  </div>
+
+  <!-- СКЛО -->
+  <div class="price-table active" id="tab-sklo">
+    <div class="price-item">
+      <div class="price-name">Щука<small>500г · дрібне зерно, ніжний смак, ідеальна для тостів і канапок</small></div>
+      <div class="price-right"><div class="price-old">429 ₴</div><div class="price-new">408 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item premium">
+      <div class="price-name">Щука Преміум <span class="premium-badge">★ ПРЕМ</span><small>500г · тільки скло · відбірна щуча ікра вищої якості, насичений смак</small></div>
+      <div class="price-right"><div class="price-old">489 ₴</div><div class="price-new">465 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Горбуша<small>440г · класична червона ікра, середнє зерно, м'який солонуватий смак</small></div>
+      <div class="price-right"><div class="price-old">449 ₴</div><div class="price-new">427 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item premium">
+      <div class="price-name">Горбуша Преміум <span class="premium-badge">★ ПРЕМ</span><small>500г · відбірна горбуша, велике зерно, насичений колір</small></div>
+      <div class="price-right"><div class="price-old">569 ₴</div><div class="price-new">541 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Форель<small>440г · дрібне зерно, яскравий помаранчевий колір, делікатний смак</small></div>
+      <div class="price-right"><div class="price-old">459 ₴</div><div class="price-new">436 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Лосось<small>500г · середнє зерно, насичений смак, один з найпопулярніших видів</small></div>
+      <div class="price-right"><div class="price-old">509 ₴</div><div class="price-new">484 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Кижуч<small>500г · велике зерно, яскравий колір, виражений рибний смак</small></div>
+      <div class="price-right"><div class="price-old">509 ₴</div><div class="price-new">484 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Кета<small>500г · велике зерно, щільна оболонка, класичний смак червоної ікри</small></div>
+      <div class="price-right"><div class="price-old">539 ₴</div><div class="price-new">512 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item premium">
+      <div class="price-name">Кета Преміум <span class="premium-badge">★ ПРЕМ</span><small>500г · відбірна кета, найбільше зерно серед червоних видів</small></div>
+      <div class="price-right"><div class="price-old">609 ₴</div><div class="price-new">579 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Веслонос<small>500г · чорна ікра преміум класу, вишуканий делікатний смак</small></div>
+      <div class="price-right"><div class="price-old">559 ₴</div><div class="price-new">531 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Осетр<small>440г · середнє зерно, ніжний вершковий смак, справжній делікатес</small></div>
+      <div class="price-right"><div class="price-old">549 ₴</div><div class="price-new">522 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="price-item premium">
+      <div class="price-name">Осетр Преміум <span class="premium-badge">★ ПРЕМ</span><small>500г · відбірна осетрова ікра, бездоганна якість</small></div>
+      <div class="price-right"><div class="price-old">629 ₴</div><div class="price-new">598 ₴</div><div class="price-disc">-5% IKORKA5</div></div>
+    </div>
+    <div class="warn-box">⚠️ Горбуша і Форель у склі — 440г. Решта — 500г. Щука Преміум — тільки скло.</div>
+  </div>
+
+  <!-- ПЛАСТИК -->
+  <div class="price-table" id="tab-plastyk">
+    <div class="price-item"><div class="price-name">Щука <small>500г</small></div><div class="price-right"><div class="price-old">379 ₴</div><div class="price-new">360 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item"><div class="price-name">Горбуша <small>500г</small></div><div class="price-right"><div class="price-old">399 ₴</div><div class="price-new">379 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item premium"><div class="price-name">Горбуша Преміум <span class="premium-badge">★ ПРЕМ</span><small>500г</small></div><div class="price-right"><div class="price-old">549 ₴</div><div class="price-new">522 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item"><div class="price-name">Форель <small>500г</small></div><div class="price-right"><div class="price-old">409 ₴</div><div class="price-new">389 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item"><div class="price-name">Лосось <small>500г</small></div><div class="price-right"><div class="price-old">459 ₴</div><div class="price-new">436 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item"><div class="price-name">Кижуч <small>500г</small></div><div class="price-right"><div class="price-old">459 ₴</div><div class="price-new">436 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item"><div class="price-name">Кета <small>500г</small></div><div class="price-right"><div class="price-old">499 ₴</div><div class="price-new">474 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item"><div class="price-name">Веслонос <small>500г</small></div><div class="price-right"><div class="price-old">509 ₴</div><div class="price-new">484 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item"><div class="price-name">Осетр <small>500г</small></div><div class="price-right"><div class="price-old">529 ₴</div><div class="price-new">503 ₴</div><div class="price-disc">-5%</div></div></div>
+    <div class="price-item premium"><div class="price-name">Осетр Преміум <span class="premium-badge">★ ПРЕМ</span><small>500г</small></div><div class="price-right"><div class="price-old">589 ₴</div><div class="price-new">560 ₴</div><div class="price-disc">-5%</div></div></div>
+  </div>
+
+  <!-- МАЛІ БАНКИ -->
+  <div class="price-table" id="tab-mali">
+    <div class="price-item">
+      <div class="price-name">Форель / Горбуша <small>200г</small></div>
+      <div class="price-right">
+        <div class="price-old">149 ₴</div>
+        <div class="price-new">142 ₴</div>
+        <div class="price-disc">-5%</div>
+      </div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Лосось, Кета, Веслонос, Кижуч, Щука <small>230г</small></div>
+      <div class="price-right">
+        <div class="price-old">179 ₴</div>
+        <div class="price-new">170 ₴</div>
+        <div class="price-disc">-5%</div>
+      </div>
+    </div>
+    <div class="price-item">
+      <div class="price-name">Чорна осетрова <small>200г</small></div>
+      <div class="price-right">
+        <div class="price-old">189 ₴</div>
+        <div class="price-new">180 ₴</div>
+        <div class="price-disc">-5%</div>
+      </div>
+    </div>
+    <div class="warn-box">⚠️ Преміальної ікри в маленьких банках немає.</div>
+    <div class="note-box">💡 Від 10 шт — знижка. Постійним клієнтам — ще краща ціна. Уточнюйте у менеджера.</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- НАБОРИ -->
+<div class="section" id="sets">
+  <div class="section-title">🎁 Популярні набори</div>
+  <div class="section-sub">Безкоштовна доставка включена у вартість</div>
+
+  <div class="set-card">
+    <div class="set-title">Набір 998 ₴ — Скло <span class="free-delivery">Безкоштовна доставка</span></div>
+    <div class="set-items">
+      <div class="set-row"><span>Горбуша × 1</span><span>333 ₴</span></div>
+      <div class="set-row"><span>Форель × 1</span><span>332 ₴</span></div>
+      <div class="set-row"><span>Осетр × 1</span><span>332 ₴</span></div>
+      <div class="set-row"><span>Кета + Веслонос</span><span class="set-gift">🎁 подарунок 1+1</span></div>
+    </div>
+    <hr class="set-divider">
+    <div class="set-extra">Допродаж: Лосось 430 ₴, Горбуша Преміум 470 ₴</div>
+  </div>
+
+  <div class="set-card">
+    <div class="set-title">Набір 1109 ₴ — Пластик <span class="free-delivery">Безкоштовна доставка</span></div>
+    <div class="set-items">
+      <div class="set-row"><span>Горбуша × 1</span><span>370 ₴</span></div>
+      <div class="set-row"><span>Форель × 1</span><span>369 ₴</span></div>
+      <div class="set-row"><span>Лосось × 1</span><span>369 ₴</span></div>
+      <div class="set-row"><span>Кета × 1</span><span class="set-gift">🎁 подарунок</span></div>
+    </div>
+    <hr class="set-divider">
+    <div class="set-extra">Допродаж: будь-який не преміум 430 ₴</div>
+  </div>
+
+  <div class="set-card">
+    <div class="set-title">Набір 1215 ₴ — Скло, малі банки <span class="free-delivery">Безкоштовна доставка</span></div>
+    <div class="set-items">
+      <div class="set-row"><span>Кета маленька × 1</span><span>151 ₴</span></div>
+      <div class="set-row"><span>Лосось, Кижуч, Веслонос, Щука, Горбуша, Форель, Чорна осетрова (7 шт)</span><span>152 ₴/шт</span></div>
+    </div>
+  </div>
+
+  <div class="set-card">
+    <div class="set-title">Набір 1299 ₴ — Скло <span class="free-delivery">Безкоштовна доставка</span></div>
+    <div class="set-items">
+      <div class="set-row"><span>Горбуша</span><span>432 ₴</span></div>
+      <div class="set-row"><span>Форель</span><span>432 ₴</span></div>
+      <div class="set-row"><span>Осетр</span><span>432 ₴</span></div>
+      <div class="set-row"><span>Лосось + Веслонос + Кета</span><span class="set-gift">🎁 подарунок 1+1+1</span></div>
+    </div>
+    <hr class="set-divider">
+    <div class="set-extra">Допродаж: Лосось слабосолений 300г — 369 ₴, 500г — 499 ₴</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- РИБА -->
+<div class="section" id="fish">
+  <div class="section-title">🐟 Слабосолена риба</div>
+  <div class="section-sub">Лосось холодного копчення та слабосолений</div>
+
+  <div class="fish-card">
+    <div class="fish-name">Лосось слабосолений 300г</div>
+    <div class="fish-row"><span>Ціна</span><span>369 ₴</span></div>
+    <div class="fish-row"><span>2-га упаковка</span><span>339 ₴</span></div>
+  </div>
+  <div class="fish-card">
+    <div class="fish-name">Лосось слабосолений 500г</div>
+    <div class="fish-row"><span>Ціна</span><span>499 ₴</span></div>
+    <div class="fish-row"><span>2-га упаковка</span><span>459 ₴</span></div>
+  </div>
+  <div class="note-box">💡 Безкоштовна доставка окремо на рибу не діє. Вигідніше брати з набором ікри.</div>
+</div>
+
+<hr class="divider">
+
+<!-- КРЕМ-СИР -->
+<div class="section" id="cream">
+  <div class="section-title">🧀 Крем-сир Philadelphia</div>
+  <div class="section-sub">Новинка! Ідеально поєднується з ікрою та рибою</div>
+
+  <div class="cream-card">
+    <div class="cream-info">
+      <div class="new-badge">НОВИНКА</div>
+      <div class="cream-name">Philadelphia Balance</div>
+      <div class="cream-desc">Ніжний вершковий смак з легкою текстурою та зниженим вмістом жиру</div>
+      <div class="cream-weight">195г</div>
+    </div>
+    <div class="cream-price">
+      <div class="price-new">115 ₴</div>
+    </div>
+  </div>
+
+  <div class="cream-card">
+    <div class="cream-info">
+      <div class="new-badge">НОВИНКА</div>
+      <div class="cream-name">Philadelphia з зеленню</div>
+      <div class="cream-desc">Класичний крем-сир з ароматними травами. Чудово з червоною ікрою та рибою</div>
+      <div class="cream-weight">195г</div>
+    </div>
+    <div class="cream-price">
+      <div class="price-new">115 ₴</div>
+    </div>
+  </div>
+
+  <div class="cream-card">
+    <div class="cream-info">
+      <div class="new-badge">НОВИНКА</div>
+      <div class="cream-name">Philadelphia з зеленою цибулею</div>
+      <div class="cream-desc">Насичений вершковий смак з пікантними нотками. Ідеально для канапок і закусок</div>
+      <div class="cream-weight">175г</div>
+    </div>
+    <div class="cream-price">
+      <div class="price-new">125 ₴</div>
+    </div>
+  </div>
+
+  <div class="warn-box">⚠️ Крем-сир продається тільки разом із замовленням ікри або риби.</div>
+</div>
+
+<hr class="divider">
+
+<!-- КОНТАКТИ -->
+<div style="padding: 50px 0 0;">
+  <div class="contact-section" id="contact">
+    <h2>Замовити зараз</h2>
+    <p>Напишіть менеджеру — підберемо набір і оформимо доставку по всій Україні</p>
+    <div class="managers">
+      <a href="https://t.me/IkorkaShoppAlina" class="manager-card">
+        <div class="manager-info">
+          <div class="manager-name">Аліна</div>
+          <div class="manager-role">Менеджер · Telegram</div>
+        </div>
+        <div class="manager-btn">Написати</div>
+      </a>
+      <a href="viber://chat?number=380507721856" class="manager-card">
+        <div class="manager-info">
+          <div class="manager-name">Оксана</div>
+          <div class="manager-role">Менеджер · Viber</div>
+        </div>
+        <div class="manager-btn viber">Viber</div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 IkorkaShop · Ікра та риба з доставкою по Україні 🇺🇦
+</footer>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.price-table').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+</script>
+</body>
+</html>
