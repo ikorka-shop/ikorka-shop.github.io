@@ -236,7 +236,7 @@ nav {
 .manager-name { font-weight: 600; font-size: 15px; color: var(--text); }
 .manager-role { font-size: 13px; color: var(--text-dim); }
 .manager-btn { background: var(--gold); color: #000; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 13px; white-space: nowrap; }
-.manager-btn.viber { background: #7360f2; color: #fff; }
+.manager-btn.viber { background: #7360f2; color: #fff; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; }
 
 footer {
   text-align: center;
@@ -511,13 +511,15 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
         </div>
         <div class="manager-btn">Написати</div>
       </a>
-    <div class="manager-card">
-  <div class="manager-info">
-    <div class="manager-name">Оксана</div>
-    <div class="manager-role">Менеджер · Viber: +380507721856</div>
-  </div>
-  <div class="manager-btn viber">Viber</div>
-</div>
+      <div class="manager-card">
+        <div class="manager-info">
+          <div class="manager-name">Оксана</div>
+          <div class="manager-role">Менеджер · Viber: +380507721856</div>
+        </div>
+        <button id="viberBtn" class="manager-btn viber" onclick="copyViberPhone()">
+          Зв'язок з менеджером
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -532,6 +534,27 @@ function switchTab(id) {
   document.querySelectorAll('.price-table').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById('tab-' + id).classList.add('active');
+}
+
+function copyViberPhone() {
+  var phone = '+380507721856';
+  var btn = document.getElementById('viberBtn');
+  var orig = btn.textContent;
+  navigator.clipboard.writeText(phone).then(function() {
+    btn.textContent = '✅ Скопійовано!';
+    btn.style.background = '#22c55e';
+    setTimeout(function() { btn.textContent = orig; btn.style.background = ''; }, 2500);
+  }).catch(function() {
+    var el = document.createElement('textarea');
+    el.value = phone;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.textContent = '✅ Скопійовано!';
+    btn.style.background = '#22c55e';
+    setTimeout(function() { btn.textContent = orig; btn.style.background = ''; }, 2500);
+  });
 }
 </script>
 </body>
